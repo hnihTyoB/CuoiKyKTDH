@@ -914,6 +914,10 @@ def drawHinhTron(x, y, R, color=None):
             x_i += 1
     t.penup()
 
+def drawMoon():
+    color = "#ffef00"
+    drawHinhTron(-72, 35, 10, color)
+
 def drawDaGiac(dsDiem, color=None):
     if color is not None:
         t.pencolor(color)
@@ -931,20 +935,62 @@ def drawDaGiac(dsDiem, color=None):
             drawPoint(diem[0], diem[1])
 
 def drawHouse():
+    color="#000000"
     # Mái nhà
     roof_points = [
         (-103, -58), (30, -58), (20, -36), (-103, -36)
     ]
-    drawDaGiac(roof_points, color="#000000")
+    drawDaGiac(roof_points, color)
     # Ống khói
     chimney_points = [
-        (-90, -36), (-90, -40), (-80, -40), (-80, -58)
+        (-97, -16), (-97, -14), (-74, -14), (-74, -16), (-78, -16), (-78, -36), (-93, -36), (-93, -16)
     ]
-    drawDaGiac(chimney_points, color="#000000")
+    drawDaGiac(chimney_points, color)
 
-def drawMoon():
-    color = "#ffef00"
-    drawHinhTron(-72, 35, 10, color)
+def xoayTaiCat(dsDiem, pX, pY, gocQuay):
+    if dsDiem:
+        gocRad = math.radians(gocQuay)
+        cosGoc = math.cos(gocRad)
+        sinGoc = math.sin(gocRad)
+        
+        newDiem = []
+        for x, y in dsDiem:
+            # Dịch điểm về gốc tọa độ
+            # Quay quanh gốc tọa độ mới
+            # Dịch chuyển trở lại vị trí ban đầu
+            newX = pX + cosGoc * (x - pX) - sinGoc * (y - pY)
+            newY = pY + sinGoc * (x - pX) + cosGoc * (y - pY)
+            newDiem.append((int(round(newX)), int(round(newY))))
+
+        return newDiem
+    else:
+        return []
+
+def drawTamGiacDeu(x, y, size, color=None, gocQuay=0):
+    rad = gocQuay
+    points = [
+        (x, y),
+        (x + size, y),
+        (x + size / 2, y + (size * (3 ** 0.5)) / 2)
+    ]
+    points = xoayTaiCat(points, x + size / 2, y + (size * (3 ** 0.5)) / 6, rad)
+    if color is not None:
+        drawDaGiac(points, color)
+    else:
+        drawDaGiac(points)
+
+def drawCat(x, y, gocQuay=0):
+    color="#000000"
+    rad = gocQuay
+    # Thân
+    drawHinhEllipse(-40, -26, 10, 11, color)
+    drawHinhEllipse(-40, -13, 6, 9, color)
+    # Đầu
+    drawHinhEllipse(-40, -1, 7, 7, color)
+    # Tai
+    size = 6
+    drawTamGiacDeu(x, y, size, color, gocQuay=rad)
+    drawTamGiacDeu(x + 10, y, size, color, gocQuay=-rad)
 
 def animation(offsetX=0):
     global isAnimating
@@ -964,6 +1010,7 @@ def animation(offsetX=0):
     # delay = max(1, int(40 - elapsed))
     # t.getscreen().ontimer(lambda: animation(offsetX), delay)
     drawHouse()
+    drawCat(-48, 3, 45)
 
 def hienThiToaDo(hang):
     if not toaDo:
@@ -1452,7 +1499,7 @@ def draw_table(root):
 
 def main():
     root = Tk()
-    root.title('BÀI TẬP 2')
+    root.title('ĐỒ ÁN CUỐI KỲ')
     root.minsize(1500, 750)
     
     draw_table(root)
