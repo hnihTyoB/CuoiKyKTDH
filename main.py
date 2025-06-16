@@ -557,7 +557,7 @@ def drawHinhHop(x, y, z, dai, rong, cao):
               (E, E2D, "E"), (F, F2D, "F"), (G, G2D, "G"), (H, H2D, "H")]
     
     # Tọa độ hiển thị trên Oxyz
-    display_coords = ["Thông số Hình Hộp:"]
+    display_coords = []
     for idx, (point3D, point2D, label) in enumerate(points):
         px, py = point2D
         t.penup()
@@ -568,7 +568,7 @@ def drawHinhHop(x, y, z, dai, rong, cao):
         
         # Thêm tọa độ vào danh sách hiển thị
         display_coords.append(f"{label}({point3D[0]}, {point3D[1]}, {point3D[2]})")
-    
+    clearToaDo()
     hienThiToaDo(display_coords)
 
 def drawHinhChop(x, y, z, dai, rong, cao):
@@ -623,9 +623,9 @@ def drawHinhChop(x, y, z, dai, rong, cao):
     # Đánh dấu các đỉnh bằng chữ cái và hiển thị tọa độ
     points = [(A, A2D, "A"), (B, B2D, "B"), (C, C2D, "C"), (D, D2D, "D"), (E, E2D, "E")]
     
-    # Tọa độ hiển thị bên phải
-    display_coords = ["Thông số Hình Chóp:"]
+    # Tọa độ hiển thị bên trái
     
+    display_coords = []
     # Vẽ các điểm và nhãn
     for idx, (point3D, point2D, label) in enumerate(points):
         px, py = point2D
@@ -637,7 +637,7 @@ def drawHinhChop(x, y, z, dai, rong, cao):
         
         # Thêm tọa độ vào danh sách hiển thị
         display_coords.append(f"{label}({point3D[0]}, {point3D[1]}, {point3D[2]})")
-    
+    clearToaDo()
     hienThiToaDo(display_coords)
 
 def drawHinhCau(x, y, z, ban_kinh):
@@ -682,10 +682,10 @@ def drawHinhCau(x, y, z, ban_kinh):
     
     # Hiển thị tọa độ tâm và bán kính
     coord_text = [
-        "Thông số Hình Cầu:",
         f"Tâm I({O[0]:.1f}, {O[1]:.1f}, {O[2]:.1f})",
         f"Bán kính R = {ban_kinh:.1f}"
     ]
+    clearToaDo()
     hienThiToaDo(coord_text)
 
 # Phần Animation
@@ -813,9 +813,8 @@ def setupdrawCloud():
         (int(15*offset_scale1), int(-7*offset_scale1), int(9*scale1), int(5*scale1))
     ]
     cloud1_definition = {
-        # "centerX": -165, "centerY": -10,
-        # "ellipses_info": cloud1_info, "color": "#6c6995"
-        "centerX": 0, "centerY": -10,
+        "centerX": -165, "centerY": -10,
+        # "centerX": 0, "centerY": -10,
         "ellipses_info": cloud1_info, "color": "#6c6995"
     }
 
@@ -835,8 +834,8 @@ def setupdrawCloud():
         (int(30*offset_scale2), int(-6*offset_scale2), int(12*scale2), int(7*scale2))
     ]
     cloud2_definition = {
-        # "centerX": -135, "centerY": 35,
-        "centerX": 0, "centerY": 35,
+        "centerX": -135, "centerY": 35,
+        # "centerX": 0, "centerY": 35,
         "ellipses_info": cloud2_info, "color": "#9e9dbd"
     }
     return [cloud1_definition, cloud2_definition]
@@ -852,6 +851,12 @@ def drawCloud(x=0, y=0):
         
         for offsetX, offsetY, a, b in ellipses_info:
             drawHinhEllipse(centerX + offsetX + x, centerY + offsetY + y, a, b, color)
+    # Hiển thị thông số toạ độ đám mây
+    hienThiToaDo([
+        "Thông số Đám Mây:",
+        f"Mây 1 (14 Ellipse): ({all_cloud_info[0]['centerX'] + x}, {all_cloud_info[0]['centerY'] + y}), a = {all_cloud_info[0]['ellipses_info'][0][2]}, b = {all_cloud_info[0]['ellipses_info'][0][3]}",
+        f"Mây 2 (13 Ellipse): ({all_cloud_info[1]['centerX'] + x}, {all_cloud_info[1]['centerY'] + y}), a = {all_cloud_info[1]['ellipses_info'][0][2]}, b = {all_cloud_info[1]['ellipses_info'][0][3]}"
+    ])
 
 def drawHinhTron(x, y, R, color=None):
     if color is not None:
@@ -917,6 +922,10 @@ def drawHinhTron(x, y, R, color=None):
 def drawMoon():
     color = "#ffef00"
     drawHinhTron(-72, 35, 10, color)
+    hienThiToaDo([
+        "Thông số Mặt Trăng:",
+        f"Mặt Trăng (Tròn): (-72, 35), Bán kính = 10"
+    ])
 
 def drawDaGiac(dsDiem, color=None):
     if color is not None:
@@ -947,7 +956,13 @@ def drawHouse():
     ]
     drawDaGiac(chimney_points, color)
 
-def xoayTaiCat(dsDiem, pX, pY, gocQuay):
+    hienThiToaDo([
+        "Thông số Nhà:",
+        f"Mái nhà (Đa giác): {roof_points}",
+        f"Ống khói (Đa giác): {chimney_points}"
+    ])
+
+def xoayQuanhDiem(dsDiem, pX, pY, gocQuay):
     if dsDiem:
         gocRad = math.radians(gocQuay)
         cosGoc = math.cos(gocRad)
@@ -973,13 +988,13 @@ def drawTamGiacDeu(x, y, size, color=None, gocQuay=0):
         (x + size, y),
         (x + size / 2, y + (size * (3 ** 0.5)) / 2)
     ]
-    points = xoayTaiCat(points, x + size / 2, y + (size * (3 ** 0.5)) / 6, rad)
+    points = xoayQuanhDiem(points, (2 * x + size) / 2, y, rad)
     if color is not None:
         drawDaGiac(points, color)
     else:
         drawDaGiac(points)
 
-def drawCat(x, y, gocQuay=0):
+def drawCat(gocQuay=0):
     color="#000000"
     rad = gocQuay
     # Thân
@@ -988,40 +1003,139 @@ def drawCat(x, y, gocQuay=0):
     # Đầu
     drawHinhEllipse(-40, -1, 7, 7, color)
     # Tai
-    size = 6
-    drawTamGiacDeu(x, y, size, color, gocQuay=rad)
-    drawTamGiacDeu(x + 10, y, size, color, gocQuay=-rad)
+    size = 7
+    drawTamGiacDeu(-48, 2, size, color, gocQuay=rad)
+    drawTamGiacDeu(-39, 2, size, color, gocQuay=-rad)
 
-def animation(offsetX=0):
-    global isAnimating
+    hienThiToaDo([
+        "Thông số Mèo:",
+        f"Thân lớn (Ellipse): (-40, -26), a lớn = 10, b lớn = 11",
+        f"Thân nhỏ (Ellipse): (-40, -13), a nhỏ = 6, b nhỏ = 9",
+        f"Đầu (Ellipse): (-40, -1), a = 7, b = 7",
+        f"Tai trái (Tam giác đều): (-48, 2), Góc quay = {gocQuay}, Kích thước = {size}",
+        f"Tai phải (Tam giác đều): (-39, 2), Góc quay = {-gocQuay}, Kích thước = {size}"
+    ])
+
+def createTailCat(x, y, a, b, isReverse=False):
+    # Tạo một danh sách các điểm (x_i, y_i) tương đối của 1/4 cung ellipse (góc phần tư 1)
+    # Điểm được sắp xếp từ trục y dương (0, b) đến trục x dương (a, 0)
+    tail_points = []
+    x_i, y_i = 0, b
+    P = b**2 - a**2 * b + a**2 / 4
+    while a**2 * (y_i - 0.5) > b**2 * (x_i + 1):         
+        tail_points.append((x + x_i, y + y_i))
+        # tail_points.append((x - x_i, y + y_i))
+        # tail_points.append((x - x_i, y - y_i))
+        tail_points.append((x + x_i, y - y_i))
+        if P < 0:
+            P += b**2 * (2 * x_i + 3)
+        else:
+            P += b**2 * (2 * x_i + 3) + a**2 * (-2 * y_i + 2)
+            y_i -= 1
+        x_i += 1
+
+    Q = b**2 * (x_i + 0.5)**2 + a**2 * (y_i - 1)**2 - a**2 * b**2
+    while y_i >= 0:          
+        tail_points.append((x + x_i, y + y_i))
+        # tail_points.append((x - x_i, y + y_i))
+        # tail_points.append((x - x_i, y - y_i))
+        tail_points.append((x + x_i, y - y_i))
+        if Q < 0:
+            Q += b**2 * (2 * x_i + 2) + a**2 * (-2 * y_i + 3)
+            x_i += 1
+        else:
+            Q += a**2 * (3 - 2 * y_i)
+        y_i -= 1
+    if tail_points:
+        # Loại bỏ các điểm trùng lặp
+        tail_pointsSorted = sorted(list(set(tail_points)))
+        # Sắp xếp các điểm duy nhất theo góc giảm dần quanh tâm (x, y) cho thứ tự theo chiều kim đồng hồ 
+        tail_pointsSorted.sort(key=lambda p: math.atan2(p[1] - y, p[0] - x), reverse=isReverse)
+        tail_points = tail_pointsSorted
+        return tail_points
+    else:
+        return []
+
+def drawTailCat(gocQuay=0):
+    color="#000000"
+    rad = gocQuay   
+    tail_points_l = createTailCat(-40, -27, 7, 7, True)
+    tail_points_r = createTailCat(-40, -26, 10, 10, False)
+    # Kết hợp các điểm trên và dưới
+    tail_points = [(-41, -18)] + tail_points_l + tail_points_r
+    if tail_points:
+        tail_points = xoayQuanhDiem(tail_points, -40, -35, rad)
+
+        t.pencolor(color)
+        t.fillcolor(color)
+        t.penup()
+        t.goto(tail_points[0][0] * 5, tail_points[0][1] * 5) # Điểm bắt đầu
+        t.pendown()
+        t.begin_fill()
+        for diem in tail_points:
+            t.goto(diem[0] * 5, diem[1] * 5)
+        t.goto(tail_points[0][0] * 5, tail_points[0][1] * 5)
+        t.end_fill()
+    
+    hienThiToaDo([
+        f"Đuôi - nửa trái (Ellipse): ({tail_points[0][0]}, {tail_points[0][1]}), a = 7, b = 7, Góc quay = {rad}",
+        f"Đuôi - nửa phải (Ellipse): ({tail_points[1][0]}, {tail_points[1][1]}), a = 10, b = 10, Góc quay = {rad}",
+        f"Đuôi - điểm cuối (Point): (-41, -18)"
+    ])
+
+radCat_change = True
+radTailCat_change = True
+def animation(offsetX=0, radCat=40, radTailCat=-60):
+    global isAnimating, radCat_change, radTailCat_change
     if not isAnimating:
         return
     start = time.time()
     t.clear()
+    clearToaDo()
     drawBackground()
     drawMoon()
+    # print(f"Offset X: {offsetX}")
     drawCloud(offsetX, 0)
-    # screen.update()
-    # offsetX += 3.5
-    # # print(f"Offset X: {offsetX}")
-    # if offsetX >= 312:
-    #     offsetX = 0
-    # elapsed = (time.time() - start) * 1000
-    # delay = max(1, int(40 - elapsed))
-    # t.getscreen().ontimer(lambda: animation(offsetX), delay)
     drawHouse()
-    drawCat(-48, 3, 45)
+    # print(f"Rad Cat: {radCat}")
+    drawCat(radCat)
+    drawTailCat(radTailCat)
+    screen.update()
+    offsetX += 3.5
+    
+    if offsetX >= 312:
+        offsetX = 0
+    
+    if radCat_change:
+        radCat += 2
+        if radCat >= 60:
+            radCat_change = False
+    else:
+        radCat -= 2
+        if radCat <= 40:
+            radCat_change = True
+    
+    if radTailCat_change:
+        radTailCat += 2
+        if radTailCat >= -30:
+            radTailCat_change = False
+    else:
+        radTailCat -= 2
+        if radTailCat <= -60:
+            radTailCat_change = True
+
+    elapsed = (time.time() - start) * 1000
+    delay = max(1, int(40 - elapsed))
+    t.getscreen().ontimer(lambda: animation(offsetX, radCat, radTailCat), delay)
+
+def clearToaDo():
+    toaDo.delete("1.0", END)
+    toaDo.insert(END, "HIỂN THỊ TỌA ĐỘ")
 
 def hienThiToaDo(hang):
-    if not toaDo:
-        print("Lỗi toaDo chưa được khởi tạo!")
-        return
-    
     if hang:
         final_text = "\n".join(hang)
-        toaDo.config(text=final_text, font=('Arial', 12, 'normal'), fg='blue', justify=LEFT, anchor='nw')
-    else:
-        toaDo.config(text="HIỂN THỊ TỌA ĐỘ", font=('Arial', 12, 'italic'), fg='black', justify=LEFT, anchor='nw')
+        toaDo.insert(END, '\n' + final_text)
     
 def input_table(root):
     frameInput = Frame(root, bd=2, width=446, height=566, relief=SOLID)
@@ -1035,13 +1149,10 @@ def input_table(root):
     topInput.grid(row=0, column=0, sticky="nsew")
     topInput.pack_propagate(False)
     global toaDo
-    toaDo =Label(topInput, 
-                  text="HIỂN THỊ TỌA ĐỘ", 
-                  font=('Arial', 12, 'italic'), 
-                  fg='black', 
-                  justify=LEFT, 
-                  anchor='nw')
-    toaDo.pack(expand=True, fill='both', padx=0, pady=0) 
+    toaDo = Text(topInput, wrap=WORD,
+             font=('Arial', 11, 'normal'), 
+             foreground='blue')
+    toaDo.pack(expand=True, fill='both', padx=0, pady=0)
 
     bottomInput = Frame(frameInput, width=446, height=283)
     bottomInput.grid(row=1, column=0, sticky="nsew")
@@ -1220,6 +1331,7 @@ def input_table(root):
         isAnimating = True
         datTrangThai(DISABLED)
         t.clear()
+        clearToaDo()
         drawOxy()
         animation()
 
@@ -1228,6 +1340,7 @@ def input_table(root):
         isAnimating = False
         datTrangThai(NORMAL)
         t.clear()
+        clearToaDo()
         drawOxy()
         if hcn:
             t.pencolor('black') 
@@ -1465,6 +1578,7 @@ def input_table(root):
         if selectedTabText == "PHẦN 2D":
             drawOxy()
             trangThaiPhepBienDoi()
+            clearToaDo()
         elif selectedTabText == "PHẦN 3D":
             drawOxyz()
             trangThaiHinhHop()
