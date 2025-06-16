@@ -21,7 +21,7 @@ def drawOxy():
     #Vẽ lưới
     p.pencolor('#C0C0C0')
     p.penup()
-    p.pensize(0.5)
+    p.pensize(1)
     for i in range(285, -290, -5):
         p.goto(-510, i)   
         p.pendown()
@@ -88,7 +88,7 @@ def drawOxyz():
     #Vẽ lưới
     p.pencolor('#C0C0C0')
     p.penup()
-    p.pensize(0.5)
+    p.pensize(1)
     for i in range(285, -290, -5):
         p.goto(-510, i)   
         p.pendown()
