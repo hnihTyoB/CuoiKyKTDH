@@ -712,6 +712,125 @@ def drawBackground():
         p.goto(left + width, top - y)
         p.penup()
 
+def drawLineStar(x1, y1, x2, y2):
+    dsDiem = []
+    dx = abs(x2 - x1)
+    dy = abs(y2 - y1)
+    step_x = 1 if x2 > x1 else -1
+    step_y = 1 if y2 > y1 else -1
+
+    if dx > dy:
+        P = 2 * dy - dx
+        x, y = x1, y1
+        while x != x2:
+            # drawPoint(x, y, color)
+            dsDiem.append((x, y))
+            if P < 0:
+                P += 2 * dy
+            else:
+                P += 2 * dy - 2 * dx
+                y += step_y
+            x += step_x
+    else:
+        P = 2 * dx - dy
+        x, y = x1, y1
+        while y != y2:
+            # drawPoint(x, y, color)
+            dsDiem.append((x, y))
+            if P < 0:
+                P += 2 * dx
+            else:
+                P += 2 * dx - 2 * dy
+                x += step_x
+            y += step_y
+
+    # drawPoint(x2, y2, color)
+    dsDiem.append((x2, y2))  
+    return dsDiem
+
+def line_intersection(p1, p2, p3, p4):
+    # Tìm giao điểm của đoạn p1-p2 và p3-p4
+    x1, y1 = p1
+    x2, y2 = p2
+    x3, y3 = p3
+    x4, y4 = p4
+    d = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4)
+    if d == 0:
+        return None  # song song
+    px = ((x1*y2 - y1*x2)*(x3-x4) - (x1-x2)*(x3*y4 - y3*x4)) / d
+    py = ((x1*y2 - y1*x2)*(y3-y4) - (y1-y2)*(x3*y4 - y3*x4)) / d
+    return (px, py)
+
+def drawStar(gocQuay=0, a ='5'):
+    color='#7675ad'
+    star_positions = [
+        (-98, 12), (-85, -20), (-86, 45), (-65, 0), (-54, 38),
+        (-41, -10), (-33, 27), (-13, -30), (-10, 15), (-3, -9),
+        (15, 50), (28, -8), (37, 40), (49, -25), (60, 18),
+        (73, -12), (85, 30), (92, -5), (99, 22), (100, -30)
+    ]
+    for x, y in star_positions:
+        # Tính 5 đỉnh đều trên đường tròn
+        points = []
+        for i in range(5):
+            angle = math.radians(i * 72 + 90)  # - 90: Quay xuống
+            px = x + a * math.cos(angle)
+            py = y + a * math.sin(angle)
+            # print(px, py)
+            points.append((int(round(px)), int(round(py))))
+
+        points = xoayQuanhDiem(points, x, y, gocQuay)
+        # Thứ tự vẽ ngôi sao: nối cách 2 đỉnh
+        order = [0, 2, 4, 1, 3, 0]
+
+        dsDiem = []
+        for i in range(len(order) - 1):
+            x1, y1 = points[order[i]]
+            x2, y2 = points[order[i + 1]]
+            dsDiem += drawLineStar(x1, y1, x2, y2)
+        # print(dsDiem)
+        points.sort(key=lambda p: math.atan2(p[1] - y, p[0] - x), reverse=True)
+        # Điểm giao nhau của các cạnh
+        inner_points = []
+        for i in range(5):
+            p1 = points[i]
+            p2 = points[(i+2)%5]
+            p3 = points[(i+1)%5]
+            p4 = points[(i+3)%5]
+            inter = line_intersection(p1, p2, p3, p4)
+            if inter is not None:
+                inner_points.append(inter)
+        # 1. Tô ngũ giác ở giữa
+        t.pencolor(color)
+        t.fillcolor(color)
+        t.penup()
+        t.goto(inner_points[0][0] * 5, inner_points[0][1] * 5)
+        t.pendown()
+        t.begin_fill()
+        for p in inner_points[1:]:
+            if p is not None:
+                drawPoint(p[0], p[1], color)
+        t.goto(inner_points[0][0] * 5, inner_points[0][1] * 5)
+        t.end_fill()
+        t.penup()
+        # Tô màu ngôi sao
+        t.pencolor(color)
+        t.fillcolor(color)
+        t.penup()
+        t.goto(dsDiem[0][0] * 5, dsDiem[0][1] * 5)
+        t.pendown()
+        t.begin_fill()
+        for diem in dsDiem[1:]:
+            if diem is not None:
+                drawPoint(diem[0], diem[1], color)
+        t.goto(dsDiem[0][0] * 5, dsDiem[0][1] * 5)
+        t.end_fill()
+    t.penup()
+
+    hienThiToaDo([
+        f"Ngôi sao: Bán kính {round(a, 1)}, {star_positions}"
+    ])
+
 def drawHinhEllipse(x, y, a, b, color='black'):
     # Danh sách lưu các điểm (x_i, y_i) tương đối của 1/4 cung ellipse (góc phần tư 1)
     # Điểm được sắp xếp từ trục y dương (0, b) đến trục x dương (a, 0)
@@ -758,7 +877,8 @@ def drawHinhEllipse(x, y, a, b, color='black'):
         t.pendown()
         t.begin_fill()
         for diem in dsDiem:
-            drawPoint(diem[0], diem[1], color)
+            if diem is not None:
+                drawPoint(diem[0], diem[1], color)
         t.goto(dsDiem[0][0] * 5, dsDiem[0][1] * 5)
         t.end_fill()
     t.penup()
@@ -812,83 +932,6 @@ def setUpDrawCloud():
         "ellipses_info": cloud2_info, "color": "#9e9dbd"
     }
     return [cloud1_definition, cloud2_definition]
-
-# def drawStar(x, y, a, color='white'):
-#     if t is None:
-#         return
-
-#     # Tính 5 đỉnh ngoài của ngôi sao
-#     outer_points = []
-#     for i in range(5):
-#         angle = math.radians(i * 72 - 90)
-#         px = x + a * math.cos(angle)
-#         py = y + a * math.sin(angle)
-#         outer_points.append((px, py))
-
-#     # Tính 5 đỉnh trong (điểm lõm giữa các cánh sao)
-#     inner_points = []
-#     for i in range(5):
-#         angle = math.radians(i * 72 + 36 - 90)
-#         px = x + (a * 0.5) * math.cos(angle)
-#         py = y + (a * 0.5) * math.sin(angle)
-#         inner_points.append((px, py))
-
-#     # Ghép xen kẽ outer - inner để tạo chu vi ngôi sao
-#     star_points = []
-#     for i in range(5):
-#         star_points.append(outer_points[i])
-#         star_points.append(inner_points[i])
-
-#     # Tô màu bằng turtle.fill
-#     t.penup()
-#     t.goto(star_points[0][0] * 5, star_points[0][1] * 5)
-#     t.fillcolor(color)
-#     t.begin_fill()
-#     t.pendown()
-
-#     for px, py in star_points[1:]:
-#         t.goto(px * 5, py * 5)
-
-#     t.goto(star_points[0][0] * 5, star_points[0][1] * 5)
-#     t.end_fill()
-
-#     hienThiToaDo([
-#         f"Ngôi sao tại ({x}, {y}), bán kính {a}, màu: {color}",
-#         *[f"P{i+1}({int(px)}, {int(py)})" for i, (px, py) in enumerate(star_points)]
-#     ])
-
-def drawStar(x, y, a, color='white'):
-    if t is None:
-        return
-
-    # Tính 5 đỉnh đều trên đường tròn
-    points = []
-    for i in range(5):
-        angle = math.radians(i * 72 - 90)  # Góc bắt đầu từ đỉnh trên
-        px = x + a * math.cos(-angle)
-        py = y + a * math.sin(-angle)
-        points.append((int(round(px)), int(round(py))))
-
-    # Thứ tự vẽ ngôi sao: nối cách 2 đỉnh
-    order = [0, 2, 4, 1, 3, 0]
-
-    # Tô màu ngôi sao
-    t.fillcolor(color)
-    t.begin_fill()
-
-    for i in range(len(order) - 1):
-        x1, y1 = points[order[i]]
-        x2, y2 = points[order[i + 1]]
-        drawLine(x1, y1, x2, y2)
-
-    t.end_fill()
-
-    # Ghi chú toạ độ (nếu cần)
-    hienThiToaDo([
-        f"Ngôi sao tại ({x}, {y}), bán kính {a}, màu: {color}",
-        *[f"P{i+1}({px}, {py})" for i, (px, py) in enumerate(points)]
-    ])
-
 
 def drawCloud(x=0, y=0):
     all_cloud_info = setUpDrawCloud()
@@ -944,7 +987,8 @@ def drawHinhTron(x, y, R, color='black'):
         t.pendown()
         t.begin_fill()
         for diem in dsDiem:
-            drawPoint(diem[0], diem[1], color)
+            if diem is not None:
+                drawPoint(diem[0], diem[1], color)
         t.goto(dsDiem[0][0] * 5, dsDiem[0][1] * 5)
         t.end_fill()
     t.penup()
@@ -953,7 +997,6 @@ def drawMoon():
     color = "#ffef00"
     drawHinhTron(-72, 35, 10, color)
     hienThiToaDo([
-        "Thông số Mặt Trăng:",
         f"Mặt Trăng (Tròn): (-72, 35), Bán kính = 10"
     ])
 
@@ -971,6 +1014,7 @@ def drawDaGiac(dsDiem, color='black'):
         drawLine(x1, y1, x2, y2, color)
     t.goto(dsDiem[0][0] * 5, dsDiem[0][1] * 5)
     t.end_fill()
+    t.penup()
 
 def drawHouse():
     color="#000000"
@@ -1120,7 +1164,8 @@ def drawTailCat(gocQuay=0):
         t.pendown()
         t.begin_fill()
         for diem in tail_points:
-            t.goto(diem[0] * 5, diem[1] * 5)
+            if diem is not None:
+                drawPoint(diem[0], diem[1], color)
         t.goto(tail_points[0][0] * 5, tail_points[0][1] * 5)
         t.end_fill()
     
@@ -1180,8 +1225,9 @@ def drawFaceCat():
 
 radCat_change = True
 radTailCat_change = True
-def animation(offsetX=0, radCat=40, radTailCat=-60):
-    global isAnimating, radCat_change, radTailCat_change
+scaleStar_change = True
+def animation(offsetX=0, radCat=40, radTailCat=-60, radStar=0, scaleStar=5):
+    global isAnimating, radCat_change, radTailCat_change, scaleStar_change
     if not isAnimating:
         return
     start = time.time()
@@ -1189,15 +1235,7 @@ def animation(offsetX=0, radCat=40, radTailCat=-60):
     clearToaDo()
     drawBackground()
     drawMoon()
-    star_positions = [
-        (-100, 10), (-90, 20), (-80, 30), (-70, 40), (-60, 50),
-        (-50, 10), (-40, 20), (-30, 30), (-20, 40), (-10, 50),
-        (0, 10), (10, 20), (20, 30), (30, 40), (40, 50),
-        (50, 10), (60, 20), (70, 30), (80, 40), (90, 50),
-        (100, 10)
-    ]
-    for star_x, star_y in star_positions:
-        drawStar(star_x, star_y, 4, color='#7675ad')
+    drawStar(-radStar, scaleStar)
     # print(f"Offset X: {offsetX}")
     drawCloud(offsetX, 0)
     drawHouse()
@@ -1229,9 +1267,22 @@ def animation(offsetX=0, radCat=40, radTailCat=-60):
         if radTailCat <= -60:
             radTailCat_change = True
 
+    radStar += 2
+    if radStar >= 62:
+        radStar = 0
+
+    if scaleStar_change:
+        scaleStar -= 0.3
+        if scaleStar < 4:
+            scaleStar_change = False
+    else:
+        scaleStar += 0.3
+        if scaleStar > 5:
+            scaleStar_change = True
+
     elapsed = (time.time() - start) * 1000
     delay = max(1, int(40 - elapsed))
-    t.getscreen().ontimer(lambda: animation(offsetX, radCat, radTailCat), delay)
+    t.getscreen().ontimer(lambda: animation(offsetX, radCat, radTailCat, radStar, scaleStar), delay)
 
 def drawEllipsePygame(surface, x, y, a, b, color=None):
     dsDiem = []
