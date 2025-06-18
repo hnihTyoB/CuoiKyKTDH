@@ -6,7 +6,7 @@ import math
 import time
 
 WINDOW_WIDTH = 1024
-WINDOW_HEIGHT = 576
+WINDOW_HEIGHT = WINDOW_WIDTH * 9 // 16
 
 isAnimating = False
 
@@ -1392,14 +1392,13 @@ def hienThiToaDo(hang):
         toaDo.insert(END, '\n' + final_text)
     
 def input_table(root):
-    frameInput = Frame(root, bd=2, width=446, height=566, relief=SOLID)
-    frameInput.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+    INPUT_WIDTH = 353
+    INPUT_HEIGHT = 287
+    frameInput = Frame(root, bd=2, width=INPUT_WIDTH, height=INPUT_HEIGHT, relief=SOLID)
+    frameInput.grid(row=0, column=0, padx=8, pady=10, sticky="nsew")
+    frameInput.grid_propagate(False) 
 
-    frameInput.grid_rowconfigure(0, weight=0) 
-    frameInput.grid_rowconfigure(1, weight=1) 
-    frameInput.grid_columnconfigure(0, weight=1)
-
-    topInput = Frame(frameInput, width=446, height=283)
+    topInput = Frame(frameInput, width=INPUT_WIDTH - 6, height=INPUT_HEIGHT)
     topInput.grid(row=0, column=0, sticky="nsew")
     topInput.pack_propagate(False)
     global toaDo
@@ -1408,13 +1407,13 @@ def input_table(root):
              foreground='blue')
     toaDo.pack(expand=True, fill='both', padx=0, pady=0)
 
-    bottomInput = Frame(frameInput, width=446, height=283)
+    bottomInput = Frame(frameInput, width=INPUT_WIDTH, height=INPUT_HEIGHT)
     bottomInput.grid(row=1, column=0, sticky="nsew")
     bottomInput.grid_rowconfigure(0, weight=1)
     bottomInput.grid_columnconfigure(0, weight=1)
 
     notebook = ttk.Notebook(bottomInput)
-    notebook.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+    notebook.grid(row=0, column=0, sticky="nsew", padx=3, pady=5)
 
     # Tab 2D
     tab2D = Frame(notebook)
@@ -1422,8 +1421,8 @@ def input_table(root):
     tab2D.grid_rowconfigure(0, weight=1)
     tab2D.grid_columnconfigure(0, weight=1)
 
-    lf2D = LabelFrame(tab2D, padx=5, pady=5)
-    lf2D.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+    lf2D = LabelFrame(tab2D, padx=3, pady=5)
+    lf2D.grid(row=0, column=0, sticky="nsew", padx=3, pady=5)
     lf2D.grid_columnconfigure(0, weight=1)
     lf2D.grid_columnconfigure(1, weight=1)
 
@@ -1432,41 +1431,41 @@ def input_table(root):
     frame2DOpt.grid_columnconfigure(0, weight=1, uniform=1)
     frame2DOpt.grid_columnconfigure(1, weight=1, uniform=1)
     frame2DOpt.grid(row=0, column=0, columnspan=2, sticky="ew", pady=10)
-    btnAnimation = Button(frame2DOpt, text='Animation', pady=5,
+    btnAnimation = Button(frame2DOpt, text='ANIMATION', pady=5,
                    command=None,
                    bg="#FF4444", fg="black", font=("Arial", 9, "bold"))
-    btnAnimation.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
-    btnPhepBienDoi = Button(frame2DOpt, text='Các phép biến đổi', pady=5,
+    btnAnimation.grid(row=0, column=0, sticky="ew", padx=3, pady=5)
+    btnPhepBienDoi = Button(frame2DOpt, text='PHÉP BIẾN ĐỔI', pady=5,
                    command=None,
                    bg="#4CAF50", fg="white", font=("Arial", 9, "bold")) 
-    btnPhepBienDoi.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
+    btnPhepBienDoi.grid(row=0, column=1, sticky="ew", padx=3, pady=5)
 
     # Hàng 2
     frameDxy = Frame(lf2D)
     frameDxy.grid(row=1, column=0, sticky="ew", pady=10) 
     lblDx = Label(frameDxy, text='Dx:', font=("Arial", 10, "bold"))
-    lblDx.grid(row=0, column=0, sticky="w", padx=5)
-    txtDx = Entry(frameDxy, bd=2, width=8)
+    lblDx.grid(row=0, column=0, sticky="w", padx=3)
+    txtDx = Entry(frameDxy, bd=2, width=6)
     txtDx.insert(0, "0")
-    txtDx.grid(row=0, column=1, sticky="ew", padx=5)
+    txtDx.grid(row=0, column=1, sticky="ew", padx=3)
     lblDy = Label(frameDxy, text='Dy:', font=("Arial", 10, "bold"))
-    lblDy.grid(row=0, column=2, sticky="w", padx=5)
-    txtDy = Entry(frameDxy, bd=2, width=8)
+    lblDy.grid(row=0, column=2, sticky="w", padx=3)
+    txtDy = Entry(frameDxy, bd=2, width=6)
     txtDy.insert(0, "0")
-    txtDy.grid(row=0, column=3, sticky="ew", padx=5)
+    txtDy.grid(row=0, column=3, sticky="ew", padx=3)
 
     frameSxy = Frame(lf2D)
     frameSxy.grid(row=1, column=1, sticky="ew", pady=5) 
     lblSx = Label(frameSxy, text='Sx:', font=("Arial", 10, "bold"))
-    lblSx.grid(row=0, column=0, sticky="w", padx=5)
-    txtSx = Entry(frameSxy, bd=2, width=8)
+    lblSx.grid(row=0, column=0, sticky="w", padx=3)
+    txtSx = Entry(frameSxy, bd=2, width=6)
     txtSx.insert(0, "1")
-    txtSx.grid(row=0, column=1, sticky="ew", padx=5)
+    txtSx.grid(row=0, column=1, sticky="ew", padx=3)
     lblSy = Label(frameSxy, text='Sy:', font=("Arial", 10, "bold"))
-    lblSy.grid(row=0, column=2, sticky="w", padx=5)
-    txtSy = Entry(frameSxy, bd=2, width=8)
+    lblSy.grid(row=0, column=2, sticky="w", padx=3)
+    txtSy = Entry(frameSxy, bd=2, width=6)
     txtSy.insert(0, "1")
-    txtSy.grid(row=0, column=3, sticky="ew", padx=5)
+    txtSy.grid(row=0, column=3, sticky="ew", padx=3)
 
     frameBtn1 = Frame(lf2D)
     frameBtn1.grid(row=2, column=0, columnspan=2, sticky="ew")
@@ -1475,64 +1474,65 @@ def input_table(root):
     btnTinhTien = Button(frameBtn1, text='TỊNH TIẾN', pady=5,
                    command=lambda: tinhTien(int(txtDx.get()), int(txtDy.get())),
                    bg="#FF4444", fg="black", font=("Arial", 9, "bold"))
-    btnTinhTien.grid(row=0, column=0, sticky="ew", padx=5)
+    btnTinhTien.grid(row=0, column=0, sticky="ew", padx=3)
     btnBienDoiTiLe = Button(frameBtn1, text='BIẾN ĐỔI TỈ LỆ', pady=5,
                    command=lambda: bienDoiTiLe(float(txtSx.get()), float(txtSy.get())),
                    bg="#4CAF50", fg="white", font=("Arial", 9, "bold")) 
-    btnBienDoiTiLe.grid(row=0, column=1, sticky="ew", padx=5)
+    btnBienDoiTiLe.grid(row=0, column=1, sticky="ew", padx=3)
 
     # Hàng 3
     frameQuay = Frame(lf2D)
     frameQuay.grid(row=3, column=0, columnspan=2, sticky="ew", pady=15)
-
-    lblP = Label(frameQuay, text='[Tọa độ P]', font=("Arial", 10, "bold"))
-    lblP.grid(row=0, column=0, sticky="w", padx=5)
-    lblPx = Label(frameQuay, text='x:', font=("Arial", 10, "bold"))
-    lblPx.grid(row=0, column=1, sticky="w", padx=5)
-    txtPx = Entry(frameQuay, bd=2, width=10)
+    # frameQuay.grid_columnconfigure(0, weight=1)
+    lblP = Label(frameQuay, text='Tọa độ P:', font=("Arial", 10, "bold"))
+    lblP.grid(row=0, column=0, sticky="w", padx=3)
+    lblPx = Label(frameQuay, text='Px:', font=("Arial", 10, "bold"))
+    lblPx.grid(row=0, column=1, sticky="w", padx=3)
+    txtPx = Entry(frameQuay, bd=2, width=6)
     txtPx.insert(0, "0")
-    txtPx.grid(row=0, column=2, sticky="ew", padx=5)
-    lblPy = Label(frameQuay, text='y:', font=("Arial", 10, "bold"))
-    lblPy.grid(row=0, column=3, sticky="w", padx=5)
-    txtPy = Entry(frameQuay, bd=2, width=10)
+    txtPx.grid(row=0, column=2, sticky="ew", padx=3)
+    lblPy = Label(frameQuay, text='Py:', font=("Arial", 10, "bold"))
+    lblPy.grid(row=0, column=3, sticky="w", padx=3)
+    txtPy = Entry(frameQuay, bd=2, width=6)
     txtPy.insert(0, "0")
-    txtPy.grid(row=0, column=4, sticky="ew", padx=5)
+    txtPy.grid(row=0, column=4, sticky="ew", padx=3)
     lblGocQuay = Label(frameQuay, text='Góc:', font=("Arial", 10, "bold"))
-    lblGocQuay.grid(row=0, column=5, sticky="w", padx=5)
-    txtGocQuay = Entry(frameQuay, bd=2, width=10)
+    lblGocQuay.grid(row=0, column=5, sticky="w", padx=3)
+    txtGocQuay = Entry(frameQuay, bd=2, width=6)
     txtGocQuay.insert(0, "0")
-    txtGocQuay.grid(row=0, column=6, sticky="ew", padx=5, pady=10)
+    txtGocQuay.grid(row=0, column=6, sticky="ew", padx=3, pady=10)
     btnQuayQuanhDiem = Button(frameQuay, text='QUAY QUANH ĐIỂM', pady=5,
                    command=lambda: quayQuanhDiem(float(txtPx.get()), float(txtPy.get()), float(txtGocQuay.get())),
                    bg="#9C27B0", fg="white", font=("Arial", 9, "bold")) 
-    btnQuayQuanhDiem.grid(row=1, column=0, columnspan=7, sticky="ew", padx=5)
+    btnQuayQuanhDiem.grid(row=1, column=0, columnspan=7, sticky="ew", padx=3)
 
     # Hàng 4
     frameAxy = Frame(lf2D)
-    frameAxy.grid(row=4, column=0, sticky="ew", padx=5)
+    frameAxy.grid(row=4, column=0, sticky="ew")
     lblAx = Label(frameAxy, text='Ax:', font=("Arial", 10, "bold"))
-    lblAx.grid(row=0, column=0, sticky="w", padx=5)
-    txtAx = Entry(frameAxy, bd=2, width=8)
+    lblAx.grid(row=0, column=0, sticky="w", padx=3)
+    txtAx = Entry(frameAxy, bd=2, width=6)
     txtAx.insert(0, "0")
-    txtAx.grid(row=0, column=1, sticky="ew", padx=5)
+    txtAx.grid(row=0, column=1, sticky="ew", padx=3)
     lblAy = Label(frameAxy, text='Ay:', font=("Arial", 10, "bold"))
-    lblAy.grid(row=0, column=2, sticky="w", padx=5)
-    txtAy = Entry(frameAxy, bd=2, width=8)
+    lblAy.grid(row=0, column=2, sticky="w", padx=3)
+    txtAy = Entry(frameAxy, bd=2, width=6)
     txtAy.insert(0, "0")
-    txtAy.grid(row=0, column=3, sticky="ew", padx=5)
+    txtAy.grid(row=0, column=3, sticky="ew", padx=3)
 
     frameBxy = Frame(lf2D)
     frameBxy.grid(row=4, column=1, sticky="ew", pady=5)
     lblBx = Label(frameBxy, text='Bx:', font=("Arial", 10, "bold"))
-    lblBx.grid(row=0, column=0, sticky="w", padx=5)
-    txtBx = Entry(frameBxy, bd=2, width=8)
+    lblBx.grid(row=0, column=0, sticky="w", padx=3)
+    txtBx = Entry(frameBxy, bd=2, width=6)
     txtBx.insert(0, "0")
-    txtBx.grid(row=0, column=1, sticky="ew", padx=5)
+    txtBx.grid(row=0, column=1, sticky="ew", padx=3)
     lblBy = Label(frameBxy, text='By:', font=("Arial", 10, "bold"))
-    lblBy.grid(row=0, column=2, sticky="w", padx=5)
-    txtBy = Entry(frameBxy, bd=2, width=8)
+    lblBy.grid(row=0, column=2, sticky="w", padx=3)
+    txtBy = Entry(frameBxy, bd=2, width=6)
     txtBy.insert(0, "0")
-    txtBy.grid(row=0, column=3, sticky="ew", padx=5)
+    txtBy.grid(row=0, column=3, sticky="ew", padx=3)
+
     frameBtn2 = Frame(lf2D)
     frameBtn2.grid(row=5, column=0, columnspan=2, sticky="ew", pady=5)
     frameBtn2.grid_columnconfigure(0, weight=1, uniform=1)
@@ -1540,11 +1540,11 @@ def input_table(root):
     btnDoiXungDiem = Button(frameBtn2, text='DX ĐIỂM', pady=5,
                    command=lambda: doiXungDiem(int(txtAx.get()), int(txtAy.get())),
                    bg="#FFCC00", fg="black", font=("Arial", 9, "bold"))
-    btnDoiXungDiem.grid(row=0, column=0, sticky="ew", padx=5)
+    btnDoiXungDiem.grid(row=0, column=0, sticky="ew", padx=3)
     btnDoiXungDoan = Button(frameBtn2, text='DX ĐOẠN', pady=5,
                    command=lambda: doiXungDoanThang(int(txtAx.get()), int(txtAy.get()), int(txtBx.get()), int(txtBy.get())),
                    bg="#FF9800", fg="white", font=("Arial", 9, "bold")) 
-    btnDoiXungDoan.grid(row=0, column=1, sticky="ew", padx=5)
+    btnDoiXungDoan.grid(row=0, column=1, sticky="ew", padx=3)
 
     # Hàng 5
     frameDoiXung2 = Frame(lf2D)
@@ -1555,15 +1555,15 @@ def input_table(root):
     btnDoiXungOx = Button(frameDoiXung2, text='DX qua Ox', pady=5,
                    command=doiXungQuaOX,
                    bg="#F44336", fg="white", font=("Arial", 9, "bold"))
-    btnDoiXungOx.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+    btnDoiXungOx.grid(row=0, column=0, sticky="ew", padx=3, pady=5)
     btnDoiXungOy = Button(frameDoiXung2, text='DX qua Oy', pady=5,
                    command=doiXungQuaOY,
                    bg="#2196F3", fg="white", font=("Arial", 9, "bold")) 
-    btnDoiXungOy.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
+    btnDoiXungOy.grid(row=0, column=1, sticky="ew", padx=3, pady=5)
     btnDoiXungO = Button(frameDoiXung2, text='DX qua O', pady=5,
                    command=doiXungQuaO,
                    bg="#795548", fg="white", font=("Arial", 9, "bold")) 
-    btnDoiXungO.grid(row=0, column=2, sticky="ew", padx=5, pady=5)
+    btnDoiXungO.grid(row=0, column=2, sticky="ew", padx=3, pady=5)
 
     danhSachItem = [
         txtDx, txtDy, txtSx, txtSy,
@@ -1593,7 +1593,7 @@ def input_table(root):
     def trangThaiPhepBienDoi():
         global isAnimating
         isAnimating = False
-        btnAnimation.config(text='Animation')
+        btnAnimation.config(text='ANIMATION')
         datTrangThai(NORMAL)
         t.clear()
         clearToaDo()
@@ -1612,8 +1612,8 @@ def input_table(root):
     tab3D.grid_rowconfigure(0, weight=1)
     tab3D.grid_columnconfigure(0, weight=1)
 
-    lf3D = LabelFrame(tab3D, padx=5, pady=10)
-    lf3D.grid(row=0, column=0, sticky="nsew", padx=5, pady=5)
+    lf3D = LabelFrame(tab3D, padx=3, pady=10)
+    lf3D.grid(row=0, column=0, sticky="nsew", padx=3, pady=5)
     lf3D.grid_columnconfigure(0, weight=1)
     lf3D.grid_columnconfigure(1, weight=1)
 
@@ -1625,131 +1625,131 @@ def input_table(root):
     btnHinhHop = Button(frameBtn3D, text='Vẽ Hình Hộp', pady=5,
                    command=lambda: drawHinhHop(0, 0, 0, 30, 30, 30),
                    bg="#F44336", fg="white", font=("Arial", 9, "bold"))
-    btnHinhHop.grid(row=0, column=0, sticky="ew", padx=5, pady=5)
+    btnHinhHop.grid(row=0, column=0, sticky="ew", padx=3, pady=5)
     btnHinhChop = Button(frameBtn3D, text='Vẽ Hình Chóp', pady=5,
                    command=lambda: drawHinhChop(0, 0, 0, 30, 30, 30),
                    bg="#2196F3", fg="white", font=("Arial", 9, "bold")) 
-    btnHinhChop.grid(row=0, column=1, sticky="ew", padx=5, pady=5)
+    btnHinhChop.grid(row=0, column=1, sticky="ew", padx=3, pady=5)
     btnHinhCau = Button(frameBtn3D, text='Vẽ Hình Cầu', pady=5,
                    command=lambda: drawHinhCau(0, 0, 0, 30),
                    bg="#795548", fg="white", font=("Arial", 9, "bold")) 
-    btnHinhCau.grid(row=0, column=2, sticky="ew", padx=5, pady=5)
+    btnHinhCau.grid(row=0, column=2, sticky="ew", padx=3, pady=5)
 
     frameTxt3D = Frame(lf3D)
     frameTxt3D.grid(row=1, column=0, columnspan=2, sticky="ew", pady=5)
-    frameTxt3D.grid_columnconfigure(0, weight=1, uniform=1)
-    frameTxt3D.grid_columnconfigure(1, weight=1, uniform=1)
-    frameTxt3D.grid_columnconfigure(2, weight=1, uniform=1)
+    frameTxt3D.grid_columnconfigure(0, weight=1)
+    frameTxt3D.grid_columnconfigure(1, weight=1)
+    frameTxt3D.grid_columnconfigure(2, weight=1)
     frameHinhHop = Frame(frameTxt3D)
-    frameHinhHop.grid(row=0, column=0, sticky="ew", padx=5)
+    frameHinhHop.grid(row=0, column=0, sticky="ew", padx=3)
     frameHinhHop.grid_columnconfigure(0, weight=1)
     frameHinhHop.grid_columnconfigure(1, weight=1)
     frameHinhChop = Frame(frameTxt3D)
-    frameHinhChop.grid(row=0, column=1, sticky="ew", padx=5)
+    frameHinhChop.grid(row=0, column=1, sticky="ew", padx=3)
     frameHinhChop.grid_columnconfigure(0, weight=1)
     frameHinhChop.grid_columnconfigure(1, weight=1)
     frameHinhCau = Frame(frameTxt3D)
-    frameHinhCau.grid(row=0, column=2, sticky="new", padx=5)
+    frameHinhCau.grid(row=0, column=2, sticky="new", padx=3)
     frameHinhCau.grid_columnconfigure(0, weight=1)
     frameHinhCau.grid_columnconfigure(1, weight=1)
 
-    lblToaDoA = Label(frameHinhHop, text='TỌA ĐỘ A', font=("Arial", 10, "bold"))
-    lblToaDoA.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5)
-    lblXA = Label(frameHinhHop, text='x:', font=("Arial", 10, "bold"))
+    lblToaDoA = Label(frameHinhHop, text='TỌA ĐỘ A', font=("Arial", 9, "bold"))
+    lblToaDoA.grid(row=0, column=0, columnspan=2, sticky="ew", padx=3)
+    lblXA = Label(frameHinhHop, text='x:', font=("Arial", 9, "bold"))
     lblXA.grid(row=1, column=0, sticky="e")
-    txtXA = Entry(frameHinhHop, bd=2, width=10)
+    txtXA = Entry(frameHinhHop, bd=2, width=8)
     txtXA.insert(0, "0")
-    txtXA.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
-    lblYA = Label(frameHinhHop, text='y:', font=("Arial", 10, "bold"))
+    txtXA.grid(row=1, column=1, sticky="ew", padx=3, pady=5)
+    lblYA = Label(frameHinhHop, text='y:', font=("Arial", 9, "bold"))
     lblYA.grid(row=2, column=0, sticky="e")
-    txtYA = Entry(frameHinhHop, bd=2, width=10)
+    txtYA = Entry(frameHinhHop, bd=2, width=8)
     txtYA.insert(0, "0")
-    txtYA.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
-    lblZA = Label(frameHinhHop, text='z:', font=("Arial", 10, "bold"))
+    txtYA.grid(row=2, column=1, sticky="ew", padx=3, pady=5)
+    lblZA = Label(frameHinhHop, text='z:', font=("Arial", 9, "bold"))
     lblZA.grid(row=3, column=0, sticky="e")
-    txtZA = Entry(frameHinhHop, bd=2, width=10)
+    txtZA = Entry(frameHinhHop, bd=2, width=8)
     txtZA.insert(0, "0")
-    txtZA.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
+    txtZA.grid(row=3, column=1, sticky="ew", padx=3, pady=5)
 
-    lblToaDoA = Label(frameHinhHop, text='KÍCH THƯỚC', font=("Arial", 10, "bold"))
-    lblToaDoA.grid(row=4, column=0, columnspan=2, sticky="ew", padx=5)
-    lblChieuDai = Label(frameHinhHop, text='Dài:', font=("Arial", 10, "bold"))
+    lblToaDoA = Label(frameHinhHop, text='KÍCH THƯỚC', font=("Arial", 9, "bold"))
+    lblToaDoA.grid(row=4, column=0, columnspan=2, sticky="ew", padx=3)
+    lblChieuDai = Label(frameHinhHop, text='Dài:', font=("Arial", 9, "bold"))
     lblChieuDai.grid(row=5, column=0, sticky="e")
-    txtChieuDai = Entry(frameHinhHop, bd=2, width=10)
+    txtChieuDai = Entry(frameHinhHop, bd=2, width=8)
     txtChieuDai.insert(0, "30")
-    txtChieuDai.grid(row=5, column=1, sticky="ew", padx=5, pady=5)
-    lblChieuRong = Label(frameHinhHop, text='Rộng:', font=("Arial", 10, "bold"))
+    txtChieuDai.grid(row=5, column=1, sticky="ew", padx=3, pady=5)
+    lblChieuRong = Label(frameHinhHop, text='Rộng:', font=("Arial", 9, "bold"))
     lblChieuRong.grid(row=6, column=0, sticky="e")
-    txtChieuRong = Entry(frameHinhHop, bd=2, width=10)
+    txtChieuRong = Entry(frameHinhHop, bd=2, width=8)
     txtChieuRong.insert(0, "30")
-    txtChieuRong.grid(row=6, column=1, sticky="ew", padx=5, pady=5)
-    lblChieuCao = Label(frameHinhHop, text='Cao:', font=("Arial", 10, "bold"))
+    txtChieuRong.grid(row=6, column=1, sticky="ew", padx=3, pady=5)
+    lblChieuCao = Label(frameHinhHop, text='Cao:', font=("Arial", 9, "bold"))
     lblChieuCao.grid(row=7, column=0, sticky="e")
-    txtChieuCao = Entry(frameHinhHop, bd=2, width=10)
+    txtChieuCao = Entry(frameHinhHop, bd=2, width=8)
     txtChieuCao.insert(0, "30")
-    txtChieuCao.grid(row=7, column=1, sticky="ew", padx=5, pady=5)
+    txtChieuCao.grid(row=7, column=1, sticky="ew", padx=3, pady=5)
 
-    lblToaDoA2 = Label(frameHinhChop, text='TỌA ĐỘ A', font=("Arial", 10, "bold"))
-    lblToaDoA2.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5)
-    lblXA2 = Label(frameHinhChop, text='x:', font=("Arial", 10, "bold"))
+    lblToaDoA2 = Label(frameHinhChop, text='TỌA ĐỘ A', font=("Arial", 9, "bold"))
+    lblToaDoA2.grid(row=0, column=0, columnspan=2, sticky="ew", padx=3)
+    lblXA2 = Label(frameHinhChop, text='x:', font=("Arial", 9, "bold"))
     lblXA2.grid(row=1, column=0, sticky="e")
-    txtXA2 = Entry(frameHinhChop, bd=2, width=10)
+    txtXA2 = Entry(frameHinhChop, bd=2, width=8)
     txtXA2.insert(0, "0")
-    txtXA2.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
-    lblYA2 = Label(frameHinhChop, text='y:', font=("Arial", 10, "bold"))
+    txtXA2.grid(row=1, column=1, sticky="ew", padx=3, pady=5)
+    lblYA2 = Label(frameHinhChop, text='y:', font=("Arial", 9, "bold"))
     lblYA2.grid(row=2, column=0, sticky="e")
-    txtYA2 = Entry(frameHinhChop, bd=2, width=10)
+    txtYA2 = Entry(frameHinhChop, bd=2, width=8)
     txtYA2.insert(0, "0")
-    txtYA2.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
-    lblZA2 = Label(frameHinhChop, text='z:', font=("Arial", 10, "bold"))
+    txtYA2.grid(row=2, column=1, sticky="ew", padx=3, pady=5)
+    lblZA2 = Label(frameHinhChop, text='z:', font=("Arial", 9, "bold"))
     lblZA2.grid(row=3, column=0, sticky="e")
-    txtZA2 = Entry(frameHinhChop, bd=2, width=10)
+    txtZA2 = Entry(frameHinhChop, bd=2, width=8)
     txtZA2.insert(0, "0")
-    txtZA2.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
+    txtZA2.grid(row=3, column=1, sticky="ew", padx=3, pady=5)
 
-    lblKichThuoc2 = Label(frameHinhChop, text='KÍCH THƯỚC', font=("Arial", 10, "bold"))
-    lblKichThuoc2.grid(row=4, column=0, columnspan=2, sticky="ew", padx=5)
-    lblChieuDai2 = Label(frameHinhChop, text='Dài:', font=("Arial", 10, "bold"))
+    lblKichThuoc2 = Label(frameHinhChop, text='KÍCH THƯỚC', font=("Arial", 9, "bold"))
+    lblKichThuoc2.grid(row=4, column=0, columnspan=2, sticky="ew", padx=3)
+    lblChieuDai2 = Label(frameHinhChop, text='Dài:', font=("Arial", 9, "bold"))
     lblChieuDai2.grid(row=5, column=0, sticky="e")
-    txtChieuDai2 = Entry(frameHinhChop, bd=2, width=10)
+    txtChieuDai2 = Entry(frameHinhChop, bd=2, width=8)
     txtChieuDai2.insert(0, "30")
-    txtChieuDai2.grid(row=5, column=1, sticky="ew", padx=5, pady=5)
-    lblChieuRong2 = Label(frameHinhChop, text='Rộng:', font=("Arial", 10, "bold"))
+    txtChieuDai2.grid(row=5, column=1, sticky="ew", padx=3, pady=5)
+    lblChieuRong2 = Label(frameHinhChop, text='Rộng:', font=("Arial", 9, "bold"))
     lblChieuRong2.grid(row=6, column=0, sticky="e")
-    txtChieuRong2 = Entry(frameHinhChop, bd=2, width=10)
+    txtChieuRong2 = Entry(frameHinhChop, bd=2, width=8)
     txtChieuRong2.insert(0, "30")
-    txtChieuRong2.grid(row=6, column=1, sticky="ew", padx=5, pady=5)
-    lblChieuCao2 = Label(frameHinhChop, text='Cao:', font=("Arial", 10, "bold"))
+    txtChieuRong2.grid(row=6, column=1, sticky="ew", padx=3, pady=5)
+    lblChieuCao2 = Label(frameHinhChop, text='Cao:', font=("Arial", 9, "bold"))
     lblChieuCao2.grid(row=7, column=0, sticky="e")
-    txtChieuCao2 = Entry(frameHinhChop, bd=2, width=10)
+    txtChieuCao2 = Entry(frameHinhChop, bd=2, width=8)
     txtChieuCao2.insert(0, "30")
-    txtChieuCao2.grid(row=7, column=1, sticky="ew", padx=5, pady=5)
+    txtChieuCao2.grid(row=7, column=1, sticky="ew", padx=3, pady=5)
 
-    lblToaDoI = Label(frameHinhCau, text='TỌA ĐỘ I', font=("Arial", 10, "bold"))
-    lblToaDoI.grid(row=0, column=0, columnspan=2, sticky="ew", padx=5)
-    lblXI = Label(frameHinhCau, text='x:', font=("Arial", 10, "bold"))
+    lblToaDoI = Label(frameHinhCau, text='TỌA ĐỘ I', font=("Arial", 9, "bold"))
+    lblToaDoI.grid(row=0, column=0, columnspan=2, sticky="ew", padx=3)
+    lblXI = Label(frameHinhCau, text='x:', font=("Arial", 9, "bold"))
     lblXI.grid(row=1, column=0, sticky="e")
-    txtXI = Entry(frameHinhCau, bd=2, width=10)
+    txtXI = Entry(frameHinhCau, bd=2, width=8)
     txtXI.insert(0, "0")
-    txtXI.grid(row=1, column=1, sticky="ew", padx=5, pady=5)
-    lblYI = Label(frameHinhCau, text='y:', font=("Arial", 10, "bold"))
+    txtXI.grid(row=1, column=1, sticky="ew", padx=3, pady=5)
+    lblYI = Label(frameHinhCau, text='y:', font=("Arial", 9, "bold"))
     lblYI.grid(row=2, column=0, sticky="e")
-    txtYI = Entry(frameHinhCau, bd=2, width=10)
+    txtYI = Entry(frameHinhCau, bd=2, width=8)
     txtYI.insert(0, "0")
-    txtYI.grid(row=2, column=1, sticky="ew", padx=5, pady=5)
-    lblZI = Label(frameHinhCau, text='z:', font=("Arial", 10, "bold"))
+    txtYI.grid(row=2, column=1, sticky="ew", padx=3, pady=5)
+    lblZI = Label(frameHinhCau, text='z:', font=("Arial", 9, "bold"))
     lblZI.grid(row=3, column=0, sticky="e")
-    txtZI = Entry(frameHinhCau, bd=2, width=10)
+    txtZI = Entry(frameHinhCau, bd=2, width=8)
     txtZI.insert(0, "0")
-    txtZI.grid(row=3, column=1, sticky="ew", padx=5, pady=5)
+    txtZI.grid(row=3, column=1, sticky="ew", padx=3, pady=5)
 
-    lblKichThuoc3 = Label(frameHinhCau, text='KÍCH THƯỚC', font=("Arial", 10, "bold"))
-    lblKichThuoc3.grid(row=4, column=0, columnspan=2, sticky="ew", padx=5)
-    lblBanKinh = Label(frameHinhCau, text='R:', font=("Arial", 10, "bold"))
+    lblKichThuoc3 = Label(frameHinhCau, text='KÍCH THƯỚC', font=("Arial", 9, "bold"))
+    lblKichThuoc3.grid(row=4, column=0, columnspan=2, sticky="ew", padx=3)
+    lblBanKinh = Label(frameHinhCau, text='R:', font=("Arial", 9, "bold"))
     lblBanKinh.grid(row=5, column=0, sticky="e")
-    txtBanKinh = Entry(frameHinhCau, bd=2, width=10)
+    txtBanKinh = Entry(frameHinhCau, bd=2, width=8)
     txtBanKinh.insert(0, "30")
-    txtBanKinh.grid(row=5, column=1, sticky="ew", padx=5, pady=5)
+    txtBanKinh.grid(row=5, column=1, sticky="ew", padx=3, pady=5)
 
     danhSachItem2 = [
         lblToaDoA, lblXA, txtXA, lblYA, txtYA, lblZA, txtZA, 
@@ -1845,7 +1845,7 @@ def input_table(root):
 
 def draw_table(root):
     draw = Frame(root, bd=2, width=WINDOW_WIDTH, height=WINDOW_HEIGHT, relief=SOLID)
-    draw.grid(row=0, column=1, padx=10)
+    draw.grid(row=0, column=1, padx=8)
 
     canvas = Canvas(draw, width=WINDOW_WIDTH, height=WINDOW_HEIGHT)
     canvas.pack()
@@ -1871,7 +1871,7 @@ def main():
     global root
     root = Tk()
     root.title('ĐỒ ÁN CUỐI KỲ')
-    root.minsize(1500, 750)
+    root.minsize(WINDOW_WIDTH + 406, 750)
     # global screenpy, clock
     # screenpy = py.display.set_mode((1024, 576))
     # clock = py.time.Clock()
