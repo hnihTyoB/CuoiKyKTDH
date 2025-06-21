@@ -1,7 +1,6 @@
 import turtle
 from tkinter import *
 from tkinter import ttk
-import pygame as py
 import math
 import time
 
