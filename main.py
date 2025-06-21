@@ -601,6 +601,43 @@ def drawHinhEllipse3D(x, y, a, b):
             Q += a**2 * (3 - 2 * y_i)
         y_i -= 1
 
+def drawHinhEllipse3D2(x, y, a, b):
+    x_i, y_i = 0, b
+    P = b**2 - a**2 * b + a**2 / 4
+    len_dash = 5
+    while a**2 * (y_i - 0.5) > b**2 * (x_i + 1):
+        if len_dash >= 3:           
+            drawPoint(x + x_i, y + y_i)
+            drawPoint(x + x_i, y - y_i) 
+        len_dash -= 1
+        if len_dash == 0:  
+            len_dash = 5
+        drawPoint(x - x_i, y + y_i)
+        drawPoint(x - x_i, y - y_i) 
+        if P < 0:
+            P += b**2 * (2 * x_i + 3)
+        else:
+            P += b**2 * (2 * x_i + 3) + a**2 * (-2 * y_i + 2)
+            y_i -= 1
+        x_i += 1
+
+    Q = b**2 * (x_i + 0.5)**2 + a**2 * (y_i - 1)**2 - a**2 * b**2
+    while y_i >= 0:
+        if len_dash >= 3:           
+            drawPoint(x + x_i, y + y_i)
+            drawPoint(x + x_i, y - y_i) 
+        len_dash -= 1
+        if len_dash == 0:  
+            len_dash = 5
+        drawPoint(x - x_i, y + y_i)
+        drawPoint(x - x_i, y - y_i) 
+        if Q < 0:
+            Q += b**2 * (2 * x_i + 2) + a**2 * (-2 * y_i + 3)
+            x_i += 1
+        else:
+            Q += a**2 * (3 - 2 * y_i)
+        y_i -= 1
+
 def drawHinhHop(x, y, z, dai, rong, cao):
     t.clear()
     
@@ -657,7 +694,7 @@ def drawHinhHop(x, y, z, dai, rong, cao):
               (E, E2D, "E"), (F, F2D, "F"), (G, G2D, "G"), (H, H2D, "H")]
     
     # Tọa độ hiển thị trên Oxyz
-    display_coords = []
+    display_coords = ["Thông số Hình hộp"]
     for idx, (point3D, point2D, label) in enumerate(points):
         px, py = point2D
         t.penup()
@@ -725,7 +762,7 @@ def drawHinhChop(x, y, z, dai, rong, cao):
     
     # Tọa độ hiển thị bên trái
     
-    display_coords = []
+    display_coords = ["Thông số Hình chóp"]
     # Vẽ các điểm và nhãn
     for idx, (point3D, point2D, label) in enumerate(points):
         px, py = point2D
@@ -772,6 +809,7 @@ def drawHinhCau(x, y, z, ban_kinh):
     # Trục lớn = 2*bán kính = đường kính
     # Trục nhỏ = factor * đường kính để tạo hiệu ứng 3D
     drawHinhEllipse3D(px, py, ban_kinh, ban_kinh * factor)
+    drawHinhEllipse3D2(px, py, ban_kinh * factor, ban_kinh)
     
     # Hiển thị tên và tọa độ tâm
     t.penup()
@@ -781,12 +819,12 @@ def drawHinhCau(x, y, z, ban_kinh):
     t.write("I", align='right', font=('arial', 12, 'normal'))
     
     # Hiển thị tọa độ tâm và bán kính
-    coord_text = [
-        f"Tâm I({O[0]:.1f}, {O[1]:.1f}, {O[2]:.1f})",
-        f"Bán kính R = {ban_kinh:.1f}"
-    ]
     clearToaDo()
-    hienThiToaDo(coord_text)
+    hienThiToaDo([
+        "Thông số Hình cầu",
+        f"Tâm: I({O[0]}, {O[1]}, {O[2]})",
+        f"Bán kính: {ban_kinh}",
+    ])
 
 # Phần Animation
 def drawBackground():
