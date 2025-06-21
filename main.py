@@ -269,6 +269,7 @@ def tinhTien(dx, dy):
 def bienDoiTiLe(Sx, Sy):
     global hcn
     if hcn and Sx > 0 and Sy > 0:
+        createHCN()
         t.clear()
         x1, y1, x2, y2 = hcn
         newX1 = x1
