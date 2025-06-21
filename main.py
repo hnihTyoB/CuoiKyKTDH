@@ -10,7 +10,6 @@ WINDOW_HEIGHT = WINDOW_WIDTH * 9 // 16
 
 isAnimating = False
 
-cat = None
 hcn = None
 p = None
 t = None
@@ -239,40 +238,11 @@ def drawNetDut(x1, y1, x2, y2):
             y += step_y
 
 #Phần 2D
-def drawCat2D(gocQuay=0):
-    color = "#4a5a6a"
-    color_chan = "#43505E"
-    x, y, a, b = cat
-    rad = 40
-    # x = 45
-    # y = 15
-    # a = 9
-    # b = 10
-    # Thân
-    drawHinhEllipse(x, y, a, b, color, gocQuay)
-    drawHinhEllipse(x, y+b+3, a-4, b-2, color, gocQuay)
-    # Đầu
-    drawHinhEllipse(x, y+23, a-3, b-3, color, gocQuay)
-    # Tai
-    size = a-2
-    drawTamGiacDeu(x-a+1, y+25, size, color, gocQuay=rad)
-    drawTamGiacDeu(x+1, y+25, size, color, gocQuay=-rad)
-    # Chân
-    drawHCN(x-1, y+b+3, x-a+5, y-b+2, color_chan, gocQuay)
-    drawHinhEllipse(x-3, y-9, a-6, b-9, color_chan, gocQuay)
-    drawHCN(x+1, y+b+3, x+a-5, y-b+2, color_chan, gocQuay)
-    drawHinhEllipse(x+3, y-9, a-6, b-9, color_chan, gocQuay)
-
-    hienThiToaDo([
-        "Thông số Mèo:",
-        f"Thân lớn (Ellipse): ({x}, {y}), a lớn = {round(a,1)}, b lớn = {round(b,1)}",
-        f"Thân nhỏ (Ellipse): ({x}, {y//2}), a nhỏ = {round(a-4,1)}, b nhỏ = {round(b-2,1)}",
-        f"Đầu (Ellipse): ({x}, {y+22}), a = {round(a-3,1)}, b = {round(b-3,1)}",
-        f"Tai trái (Tam giác đều): ({x-8}, {y+25}), Góc quay = {rad}, Kích thước = {size}",
-        f"Tai phải (Tam giác đều): ({x+1}, {y+25}), Góc quay = {-rad}, Kích thước = {size}",
-        f"Chân trái (Hình chữ nhật): ({x-4}, {y//2}), ({x-1}, {y-8})",
-        f"Chân phải (Hình chữ nhật): ({x+1}, {y//2}), ({x+4}, {y-8})"
-    ])
+def createHCN():
+    global hcn
+    hcn = [10, 10, 40, 25]
+    t.clear()
+    drawHCN(hcn[0], hcn[1], hcn[2], hcn[3])
 
 def tinhTien(dx, dy):
     global hcn
@@ -295,18 +265,6 @@ def tinhTien(dx, dy):
         ])
     else:
         print("Không có hình chữ nhật!")
-    
-    # global cat
-    # if cat:
-    #     t.clear()
-    #     clearToaDo()
-    #     x, y, a, b = cat
-    #     newX = x + dx
-    #     newY = y + dy
-    #     cat = (newX, newY, a, b)
-    #     drawCat2D()
-    # else:
-    #     print("Không có con mèo!")
 
 def bienDoiTiLe(Sx, Sy):
     global hcn
@@ -317,51 +275,40 @@ def bienDoiTiLe(Sx, Sy):
         newY1 = y1
         newX2 = x2 * Sx
         newY2 = y2 * Sy
-        print(newX1, newY1, newX2, newY2)
+        # print(newX1, newY1, newX2, newY2)
         hcn = (newX1, newY1, newX2, newY2)
         drawHCN(newX1, newY1, newX2, newY2)
         clearToaDo()
         hienThiToaDo([
             "Thông số Hình chữ nhật:",
-            f"A({newX1}, {newY1})",
-            f"B({newX2}, {newY1})",
-            f"C({newX2}, {newY2})",
-            f"D({newX1}, {newY2})"
+            f"A({round(newX1, 1)}, {round(newY1, 1)})",
+            f"B({round(newX2, 1)}, {round(newY1, 1)})",
+            f"C({round(newX2, 1)}, {round(newY2, 1)})",
+            f"D({round(newX1, 1)}, {round(newY2, 1)})"
         ])
     else:
         print("Không có hình chữ nhật hoặc tỉ lệ không hợp lệ!")
-    
-    # global cat
-    # if cat:
-    #     t.clear()
-    #     clearToaDo()
-    #     x, y, a, b = cat
-    #     newA = a * Sx
-    #     newB = b * int(Sy)
-    #     cat = (x, y, newA, newB)
-    #     drawCat2D()
-    # else:
-    #     print("Không có con mèo!")
 
 def quayQuanhDiem(pX, pY, gocQuay):
     global hcn
     if hcn:
-        t.clear() 
+        createHCN()
+        t.clear()
         color = 'red'
-        if pX != 0 or pY != 0:
-            pX2 = pX * 5
-            pY2 = pY * 5
-            
-            t.penup()
-            t.goto(pX2, pY2)
-            t.pendown()
-            t.dot(5, color)
-            
-            t.penup()
-            t.goto(pX2 - 2, pY2 - 22) 
-            t.pencolor(color)
-            t.pendown()
-            t.write('P', align='right', font=('arial', 15, 'normal'))
+        color_text = 'blue'
+        pX2 = pX * 5
+        pY2 = pY * 5
+        
+        t.penup()
+        t.goto(pX2, pY2)
+        t.pendown()
+        t.dot(8, color_text)
+        
+        t.penup()
+        t.goto(pX2 - 2, pY2 + 2) 
+        t.pencolor(color_text)
+        t.pendown()
+        t.write('P', align='right', font=('arial', 15, 'normal'))
             
         x1, y1, x2, y2 = hcn
         diem = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
@@ -378,7 +325,7 @@ def quayQuanhDiem(pX, pY, gocQuay):
             newY = pY + sinGoc * (x - pX) + cosGoc * (y - pY)
             newDiem.append((int(round(newX)), int(round(newY))))
 
-        hcn = (newDiem[0][0], newDiem[0][1], newDiem[2][0], newDiem[2][1])
+        # hcn = (newDiem[0][0], newDiem[0][1], newDiem[2][0], newDiem[2][1])
         t.penup()
         t.pencolor(color)
         t.fillcolor(color)
@@ -390,7 +337,7 @@ def quayQuanhDiem(pX, pY, gocQuay):
         for i in range(slCanh):
             pDau = newDiem[i]
             pCuoi = newDiem[(i + 1) % slCanh]
-            drawLine(pDau[0], pDau[1], pCuoi[0], pCuoi[1])
+            drawLine(pDau[0], pDau[1], pCuoi[0], pCuoi[1], color)
         t.goto(newDiem[0][0] * 5, newDiem[0][1] * 5)
         t.end_fill()
         t.penup()
@@ -406,18 +353,10 @@ def quayQuanhDiem(pX, pY, gocQuay):
     else:
         print("Không có hình chữ nhật!")
 
-    # global cat
-    # if cat:
-    #     t.clear()
-    #     clearToaDo()
-    #     x, y, a, b = cat
-    #     drawCat2D(gocQuay)
-    # else:
-    #     print("Không có con mèo!")
-
 def doiXungQuaO():
     global hcn
     if hcn:
+        createHCN()
         # t.clear() 
         x1, y1, x2, y2  = hcn
         
@@ -430,28 +369,18 @@ def doiXungQuaO():
         clearToaDo()
         hienThiToaDo([
             "Thông số Hình chữ nhật:",
-            f"A({newX1}, {newY1})",
-            f"B({newX2}, {newY1})",
-            f"C({newX2}, {newY2})",
-            f"D({newX1}, {newY2})"
+            f"A({round(newX1, 1)}, {round(newY1, 1)})",
+            f"B({round(newX2, 1)}, {round(newY1, 1)})",
+            f"C({round(newX2, 1)}, {round(newY2, 1)})",
+            f"D({round(newX1, 1)}, {round(newY2, 1)})"
         ])
     else:
         print("Không có hình chữ nhật!")
-    # global cat
-    # if cat:
-    #     t.clear()
-    #     clearToaDo()
-    #     x, y, a, b = cat
-    #     newX = -x
-    #     newY = -y
-    #     cat = (newX, newY, a, b)
-    #     drawCat2D()
-    # else:
-    #     print("Không có con mèo!")
 
 def doiXungQuaOX():
     global hcn
     if hcn:
+        createHCN()
         # t.clear()
         x1, y1, x2, y2  = hcn
         
@@ -475,6 +404,7 @@ def doiXungQuaOX():
 def doiXungQuaOY():
     global hcn
     if hcn:
+        createHCN()
         # t.clear()
         x1, y1, x2, y2  = hcn
         
@@ -498,18 +428,21 @@ def doiXungQuaOY():
 def doiXungDiem(xA, yA):
     global hcn
     if hcn:
-        # t.clear() 
+        createHCN()
+        # t.clear()
+        color = 'red'
+        color_text = 'blue'
         xA2 = xA * 5
         yA2 = yA * 5
         
         t.penup()
         t.goto(xA2, yA2)
         t.pendown()
-        t.dot(5, 'red')
+        t.dot(8, color_text)
         
         t.penup()
-        t.goto(xA2 - 2, yA2 - 22) 
-        t.pencolor('red')
+        t.goto(xA2 - 2, yA2 + 2) 
+        t.pencolor(color_text)
         t.pendown()
         t.write('A', align='right', font=('arial', 15, 'normal'))
 
@@ -520,7 +453,7 @@ def doiXungDiem(xA, yA):
         newX2 = 2*xA - x2
         newY2 = 2*yA - y2
         hcn = (newX1, newY1, newX2, newY2)
-        drawHCN(newX1, newY1, newX2, newY2)
+        drawHCN(newX1, newY1, newX2, newY2, color)
         clearToaDo()
         hienThiToaDo([
             "Thông số Hình chữ nhật:",
@@ -535,8 +468,10 @@ def doiXungDiem(xA, yA):
 def doiXungDoanThang(xA, yA, xB, yB):
     global hcn
     if hcn and (xA != xB or yA != yB):
+        createHCN()
         # t.clear() 
         color = 'red'
+        color_text = 'blue'
         xA2 = xA * 5
         yA2 = yA * 5
         xB2 = xB * 5
@@ -545,26 +480,26 @@ def doiXungDoanThang(xA, yA, xB, yB):
         t.penup()
         t.goto(xA2, yA2)
         t.pendown()
-        t.dot(5, color)
+        t.dot(8, color_text)
         
         t.penup()
-        t.goto(xA2 - 2, yA2 - 2) 
-        t.pencolor(color)
+        t.goto(xA2 - 2, yA2 + 2) 
+        t.pencolor(color_text)
         t.pendown()
         t.write('A', align='right', font=('arial', 15, 'normal'))
 
         t.penup()
         t.goto(xB2, yB2)
         t.pendown()
-        t.dot(5, color)
+        t.dot(8, color_text)
         
         t.penup()
-        t.goto(xB2 - 2, yB2 - 2)
-        t.pencolor(color)
+        t.goto(xB2 - 2, yB2 + 2)
+        t.pencolor(color_text)
         t.pendown()
         t.write('B', align='right', font=('arial', 15, 'normal'))
 
-        drawLine(xA, yA, xB, yB)
+        drawLine(xA, yA, xB, yB, color_text)
 
         x1, y1, x2, y2 = hcn
         diem = [(x1, y1), (x2, y1), (x2, y2), (x1, y2)]
@@ -592,7 +527,7 @@ def doiXungDoanThang(xA, yA, xB, yB):
         for i in range(slCanh):
             pDau = newDiem[i]
             pCuoi = newDiem[(i + 1) % slCanh]
-            drawLine(pDau[0], pDau[1], pCuoi[0], pCuoi[1])
+            drawLine(pDau[0], pDau[1], pCuoi[0], pCuoi[1], color)
         t.goto(newDiem[0][0] * 5, newDiem[0][1] * 5)
         t.end_fill()
         t.penup()
@@ -1478,7 +1413,7 @@ def drawTailCat(gocQuay=-45):
         t.pencolor(color)
         t.fillcolor(color)
         t.penup()
-        t.goto(tail_points[0][0] * 5, tail_points[0][1] * 5) # Điểm bắt đầu
+        t.goto(tail_points[0][0] * 5, tail_points[0][1] * 5)
         t.pendown()
         t.begin_fill()
         for diem in tail_points:
@@ -1643,104 +1578,6 @@ def animation(offsetX=0, radTree=80, radCat=40, radTailCat=-45, radStar=0, scale
     delay = max(1, int(40 - elapsed))
     t.getscreen().ontimer(lambda: animation(offsetX, radTree, radCat, radTailCat, radStar, scaleStar, scaleStarSB, offsetSB, scaleSB1, scaleSB2, lenSB), delay)
 
-def drawEllipsePygame(surface, x, y, a, b, color=None):
-    dsDiem = []
-    x_i, y_i = 0, b
-    P = b**2 - a**2 * b + a**2 / 4
-    while a**2 * (y_i - 0.5) > b**2 * (x_i + 1):         
-        dsDiem.append((int(x + x_i), int(y + y_i)))
-        dsDiem.append((int(x - x_i), int(y + y_i)))
-        dsDiem.append((int(x - x_i), int(y - y_i)))
-        dsDiem.append((int(x + x_i), int(y - y_i)))
-        if P < 0:
-            P += b**2 * (2 * x_i + 3)
-        else:
-            P += b**2 * (2 * x_i + 3) + a**2 * (-2 * y_i + 2)
-            y_i -= 1
-        x_i += 1
-
-    Q = b**2 * (x_i + 0.5)**2 + a**2 * (y_i - 1)**2 - a**2 * b**2
-    while y_i >= 0:          
-        dsDiem.append((int(x + x_i), int(y + y_i)))
-        dsDiem.append((int(x - x_i), int(y + y_i)))
-        dsDiem.append((int(x - x_i), int(y - y_i)))
-        dsDiem.append((int(x + x_i), int(y - y_i)))
-        if Q < 0:
-            Q += b**2 * (2 * x_i + 2) + a**2 * (-2 * y_i + 3)
-            x_i += 1
-        else:
-            Q += a**2 * (3 - 2 * y_i)
-        y_i -= 1
-
-    if dsDiem:
-        # Loại bỏ trùng lặp và sắp xếp theo góc quanh tâm
-        dsDiemSorted = sorted(list(set(dsDiem)), key=lambda p: math.atan2(p[1] - y, p[0] - x), reverse=True)
-        if color is not None:
-            scale = 5
-            dsDiemScaled = [(int(px*scale), int(py*scale)) for px, py in dsDiemSorted]
-            pygame.draw.polygon(surface, color, dsDiemScaled)
-        else:
-            scale = 5
-            for p in dsDiemSorted:
-                surface.set_at((int(p[0]*scale), int(p[1]*scale)), (0, 0, 0))
-
-def drawCloud1(surface, x=0, y=0):
-    all_cloud_info = setUpDrawCloud()
-    for cloud in all_cloud_info:
-        centerX = cloud["centerX"]
-        centerY = cloud["centerY"]
-        ellipses_info = cloud["ellipses_info"]
-        color = cloud["color"]
-        if isinstance(color, str) and color.startswith("#"):
-            color = tuple(int(color[i:i+2], 16) for i in (1, 3, 5))
-        for offsetX, offsetY, a, b in ellipses_info:
-            drawEllipsePygame(surface, centerX + offsetX + x, centerY + offsetY + y, a, b, color)
-
-def animationPygame():
-    running = True
-    radCat_change = True
-    radTailCat_change = True
-    offsetX = 0
-    radCat = 40
-    radTailCat = -60
-    while running:
-        for event in py.event.get():
-            if event.type == py.QUIT:
-                running = False
-
-        screenpy.fill((60, 22, 104))  # Màu nền, có thể thay bằng drawBackground nếu muốn
-        # drawBackground()  # Nếu đã chuyển sang pygame
-        # drawMoon()        # Nếu đã chuyển sang pygame
-        drawCloud1(screenpy, offsetX, 0)
-        # drawHouse(), drawCat(), drawTailCat() ... nếu đã chuyển sang pygame
-
-        py.display.flip()
-        offsetX += 3.5
-        if offsetX >= 312:
-            offsetX = 0
-
-        if radCat_change:
-            radCat += 2
-            if radCat >= 60:
-                radCat_change = False
-        else:
-            radCat -= 2
-            if radCat <= 40:
-                radCat_change = True
-
-        if radTailCat_change:
-            radTailCat += 2
-            if radTailCat >= -30:
-                radTailCat_change = False
-        else:
-            radTailCat -= 2
-            if radTailCat <= -60:
-                radTailCat_change = True
-
-        clock.tick(25)  # Đảm bảo ~40ms mỗi frame
-
-    py.quit()
-
 def clearToaDo():
     toaDo.delete("1.0", END)
     toaDo.insert(END, "HIỂN THỊ TỌA ĐỘ")
@@ -1826,12 +1663,12 @@ def input_table(root):
     lblSx = Label(frameSxy, text='Sx:', font=("Arial", 10, "bold"))
     lblSx.grid(row=0, column=0, sticky="w", padx=3)
     txtSx = Entry(frameSxy, bd=2, width=6)
-    txtSx.insert(0, "2")
+    txtSx.insert(0, "1")
     txtSx.grid(row=0, column=1, sticky="ew", padx=3)
     lblSy = Label(frameSxy, text='Sy:', font=("Arial", 10, "bold"))
     lblSy.grid(row=0, column=2, sticky="w", padx=3)
     txtSy = Entry(frameSxy, bd=2, width=6)
-    txtSy.insert(0, "2")
+    txtSy.insert(0, "1")
     txtSy.grid(row=0, column=3, sticky="ew", padx=3)
 
     frameBtn1 = Frame(lf2D)
@@ -1982,9 +1819,7 @@ def input_table(root):
         t.clear()  
         drawOxy()
         if hcn:
-            t.clear()
-            hcn = [10, 10, 40, 25]
-            drawHCN(hcn[0], hcn[1], hcn[2], hcn[3])
+            createHCN()           
             clearToaDo()
             hienThiToaDo([
                 "Thông số Hình chữ nhật:",
@@ -1993,8 +1828,6 @@ def input_table(root):
                 f"C({hcn[2]}, {hcn[3]})",
                 f"D({hcn[0]}, {hcn[3]})"
             ])
-            
-            # drawCat2D()
             # print(hcn)
         else:
             print("Không có hình chữ nhật!")
@@ -2002,7 +1835,7 @@ def input_table(root):
     btnAnimation.config(command=trangThaiAnimation)
     btnPhepBienDoi.config(command=trangThaiPhepBienDoi)
 
-    # Tab 3D (để trống)
+    # Tab 3D
     tab3D = Frame(notebook)
     notebook.add(tab3D, text="PHẦN 3D")
     tab3D.grid_rowconfigure(0, weight=1)
@@ -2279,8 +2112,6 @@ def main():
         f"C({hcn[2]}, {hcn[3]})",
         f"D({hcn[0]}, {hcn[3]})"
     ])
-    # global cat
-    # cat = [45, 15, 9, 10]
     root.mainloop()
 
 if __name__ == "__main__":
