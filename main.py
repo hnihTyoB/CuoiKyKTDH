@@ -653,14 +653,13 @@ def drawHinhHop(x, y, z, dai, rong, cao):
     G = (x + dai, y + cao, z + rong)
     H = (x, y + cao, z + rong)
     
-    # Hệ số để tạo hiệu ứng 3D (tỷ lệ góc nhìn theo trục z)
-    factor = 0.5
-    
     # Chuyển đổi tọa độ 3D sang 2D để hiển thị
     def to2D(point):
         x3d, y3d, z3d = point
-        x2d = x3d - z3d * factor
-        y2d = y3d - z3d * factor
+        theta = math.radians(45)
+        scale = 0.5
+        x2d = x3d - z3d * math.cos(theta) * scale
+        y2d = y3d - z3d * math.sin(theta) * scale
         return int(x2d), int(y2d)
     
     # Chuyển đổi tọa độ các đỉnh
@@ -721,14 +720,13 @@ def drawHinhChop(x, y, z, dai, rong, cao):
     # Đỉnh chóp đặt ở giữa đáy và cao hơn
     E = (x + dai/2, y + cao, z + rong/2)
     
-    # Hệ số để tạo hiệu ứng 3D (tỷ lệ góc nhìn theo trục z)
-    factor = 0.5
-    
     # Chuyển đổi tọa độ 3D sang 2D để hiển thị
     def to2D(point):
         x3d, y3d, z3d = point
-        x2d = x3d - z3d * factor
-        y2d = y3d - z3d * factor
+        theta = math.radians(45)
+        scale = 0.5
+        x2d = x3d - z3d * math.cos(theta) * scale
+        y2d = y3d - z3d * math.sin(theta) * scale
         return int(x2d), int(y2d)
     
     # Chuyển đổi tọa độ các đỉnh
@@ -781,14 +779,13 @@ def drawHinhCau(x, y, z, ban_kinh):
     # Xóa hình vẽ trước
     t.clear()
     
-    # Hệ số để tạo hiệu ứng 3D (tỷ lệ góc nhìn theo trục z)
-    factor = 0.5
-    
     # Chuyển đổi tọa độ 3D sang 2D để hiển thị
     def to2D(point):
         x3d, y3d, z3d = point
-        x2d = x3d - z3d * factor
-        y2d = y3d - z3d * factor
+        theta = math.radians(45)
+        scale = 0.5
+        x2d = x3d + z3d * math.cos(theta) * scale
+        y2d = y3d + z3d * math.sin(theta) * scale
         return int(x2d), int(y2d)
     
     # Tọa độ tâm
@@ -804,12 +801,14 @@ def drawHinhCau(x, y, z, ban_kinh):
     # Vẽ đường tròn chính (mặt chiếu)
     drawHinhTron3D(px, py, ban_kinh)
     
-    # Vẽ một ellipse ngang (với trục lớn là đường kính của đường tròn)
-    # Đảm bảo ellipse tiếp xúc với đường tròn chính ở 2 điểm
-    # Trục lớn = 2*bán kính = đường kính
-    # Trục nhỏ = factor * đường kính để tạo hiệu ứng 3D
-    drawHinhEllipse3D(px, py, ban_kinh, ban_kinh * factor)
-    drawHinhEllipse3D2(px, py, ban_kinh * factor, ban_kinh)
+    # Tạo hiệu ứng 3D bằng ellipse nằm ngang (chiếu trục Z)
+    # Trong Cabinet: trục nhỏ = cos(45)*0.5 = ~0.35 -> làm nổi khối
+    scale = 0.5
+    theta = math.radians(45)
+    ellipse_b = ban_kinh * math.sin(theta) * scale  # trục nhỏ của ellipse
+
+    drawHinhEllipse3D(px, py, ban_kinh, ellipse_b)   # ellipse ngang
+    drawHinhEllipse3D2(px, py, ellipse_b, ban_kinh)   # ellipse dọc
     
     # Hiển thị tên và tọa độ tâm
     t.penup()
