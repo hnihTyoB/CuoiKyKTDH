@@ -9,8 +9,8 @@
 ## 📸 Demo giao diện
 
 ![Giao diện Animation](demo1.png)
-![Giao diện Phép biến đổi](demo1.png)
-![Giao diện Phần 3D](demo1.png)
+![Giao diện Phép biến đổi](demo2.png)
+![Giao diện Phần 3D](demo3.png)
 
 ---
 
@@ -79,3 +79,5 @@ pip install tkinter
 👉 [Thinh11tuoi](https://www.facebook.com/nguyen.chi.thinh.74213)
 
 > 🧠 Đây là tài liệu README chính thức của đồ án. Nếu bạn thấy dự án hữu ích, đừng quên ⭐️ repo để ủng hộ!
+
+[⬆️ Quay lại đầu trang](#-đồ-án-kỹ-thuật-đồ-họa-2024---2025)
