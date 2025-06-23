@@ -784,8 +784,8 @@ def drawHinhCau(x, y, z, ban_kinh):
         x3d, y3d, z3d = point
         theta = math.radians(45)
         scale = 0.5
-        x2d = x3d + z3d * math.cos(theta) * scale
-        y2d = y3d + z3d * math.sin(theta) * scale
+        x2d = x3d - z3d * math.cos(theta) * scale
+        y2d = y3d - z3d * math.sin(theta) * scale
         return int(x2d), int(y2d)
     
     # Tọa độ tâm
