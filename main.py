@@ -281,10 +281,10 @@ def bienDoiTiLe(Sx, Sy):
         clearToaDo()
         hienThiToaDo([
             "Thông số Hình chữ nhật:",
-            f"A({round(newX1, 1)}, {round(newY1, 1)})",
-            f"B({round(newX2, 1)}, {round(newY1, 1)})",
-            f"C({round(newX2, 1)}, {round(newY2, 1)})",
-            f"D({round(newX1, 1)}, {round(newY2, 1)})"
+            f"A({round(newX1, 0)}, {round(newY1, 0)})",
+            f"B({round(newX2, 0)}, {round(newY1, 0)})",
+            f"C({round(newX2, 0)}, {round(newY2, 0)})",
+            f"D({round(newX1, 0)}, {round(newY2, 0)})"
         ])
     else:
         print("Không có hình chữ nhật hoặc tỉ lệ không hợp lệ!")
@@ -369,10 +369,10 @@ def doiXungQuaO():
         clearToaDo()
         hienThiToaDo([
             "Thông số Hình chữ nhật:",
-            f"A({round(newX1, 1)}, {round(newY1, 1)})",
-            f"B({round(newX2, 1)}, {round(newY1, 1)})",
-            f"C({round(newX2, 1)}, {round(newY2, 1)})",
-            f"D({round(newX1, 1)}, {round(newY2, 1)})"
+            f"A({round(newX1, 0)}, {round(newY1, 0)})",
+            f"B({round(newX2, 0)}, {round(newY1, 0)})",
+            f"C({round(newX2, 0)}, {round(newY2, 0)})",
+            f"D({round(newX1, 0)}, {round(newY2, 0)})"
         ])
     else:
         print("Không có hình chữ nhật!")
@@ -974,7 +974,7 @@ def drawStar(gocQuay=0, a=5, offset=(0, 0)):
     t.penup()
 
     hienThiToaDo([
-        f"Ngôi sao: Bán kính {round(a, 1)}, {star_positions}"
+        f"Ngôi sao: Bán kính {round(a, 0)}, {star_positions}"
     ])
 
 def drawStar2(x, y, gocQuay=0, a=5, offset=(0, 0)):
@@ -1061,7 +1061,7 @@ def drawSaoBang(gocQuay=0, a=5, offset=(0, 0), scale1=(1, 1), scale2=(1, 1), len
         drawLine(tia[0][0], tia[0][1], tia[1][0], tia[1][1], color, 8)
     hienThiToaDo([
         "Thông số Sao Băng:",
-        f"Sao Băng: Bán kính {round(a, 1)}, {star_positions}",
+        f"Sao Băng: Bán kính {round(a, 0)}, {star_positions}",
         f"Tia sao băng (Đoạn thẳng): {tia}",
     ])
 
@@ -1183,8 +1183,8 @@ def drawCloud(x=0, y=0):
     # Hiển thị thông số toạ độ đám mây
     hienThiToaDo([
         "Thông số Đám Mây:",
-        f"Mây 1 (14 Ellipse): ({all_cloud_info[0]['centerX'] + x}, {all_cloud_info[0]['centerY'] + y}), a = {all_cloud_info[0]['ellipses_info'][0][2]}, b = {all_cloud_info[0]['ellipses_info'][0][3]}",
-        f"Mây 2 (13 Ellipse): ({all_cloud_info[1]['centerX'] + x}, {all_cloud_info[1]['centerY'] + y}), a = {all_cloud_info[1]['ellipses_info'][0][2]}, b = {all_cloud_info[1]['ellipses_info'][0][3]}"
+        f"Mây 1 (14 Ellipse): ({round(all_cloud_info[0]['centerX'] + x, 0)}, {round(all_cloud_info[0]['centerY'] + y, 0)}), a = {all_cloud_info[0]['ellipses_info'][0][2]}, b = {all_cloud_info[0]['ellipses_info'][0][3]}",
+        f"Mây 2 (14 Ellipse): ({round(all_cloud_info[1]['centerX'] + x, 0)}, {round(all_cloud_info[1]['centerY'] + y, 0)}), a = {all_cloud_info[1]['ellipses_info'][0][2]}, b = {all_cloud_info[1]['ellipses_info'][0][3]}"
     ])
 
 def drawHinhTron(x, y, R, color='black'):
@@ -1517,8 +1517,8 @@ def drawFaceCat():
     t.penup()
 
     hienThiToaDo([
-        f"Mắt trái (Điểm): ({x - 2.5}, {y + 2}), Kích thước = 4",
-        f"Mắt phải (Điểm): ({x + 3.5}, {y + 2}), Kích thước = 4",
+        f"Mắt trái (Điểm): ({round(x - 2.5, 0)}, {round(y + 2, 0)}), Kích thước = 4",
+        f"Mắt phải (Điểm): ({round(x + 3.5, 0)}, {round(y + 2, 0)}), Kích thước = 4",
         f"Mũi (Tam giác đều): ({x - 1}, {y - 2}), Kích thước = 3",
         f"Miệng (Ellipse): ({x}, {y - 4}), a = 1, b = 2",
         f"Râu trái (Đoạn thẳng): ({x - 3}, {y - 2}), ({x - 10}, {y - 2})",
